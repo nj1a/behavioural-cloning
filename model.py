@@ -10,8 +10,8 @@ import numpy as np
 
 # load the data
 driving_log = pd.read_csv('./driving_log.csv')
-# images = pd.concat([driving_log['center'], driving_log['left'], driving_log['right']])
-# angles = pd.concat([driving_log['angle'], driving_log['angle'] + 0.3, driving_log['angle'] - 0.3])
+#image_paths = pd.concat([driving_log['center'], driving_log['left'], driving_log['right']])
+#angles = pd.concat([driving_log['steering'], driving_log['steering'] + 0.3, driving_log['steering'] - 0.3])
 image_paths = driving_log['center']
 angles = driving_log['steering']
 paths_training, paths_validation, angles_training, angles_validation = train_test_split(image_paths, angles,
@@ -69,7 +69,8 @@ def a_model():
 def generator(ins, outs):
     while 1:
         for (image_path, angle) in zip(ins, outs):
-            img = imread('./' + image_path)[None, :, :, :]
+            path = ('./' + image_path).replace(' ', '')
+            img = imread(path)[None, :, :, :]
             ang = np.asarray([angle], np.float64)
             yield img, ang
 
