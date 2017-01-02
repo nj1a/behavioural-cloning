@@ -9,14 +9,12 @@ from keras.preprocessing.image import ImageDataGenerator
 from keras.optimizers import Adam
 
 
-def process_image(image_path, flip=False):
+def process_image(image_path):
     path = image_path.replace(' ', '')
     img = imread(path)
     # fit into input shape (66, 200, 3)
     resized = imresize(img, (100, 200))
     cropped = resized[34:, :, :]
-    if flip:
-        return np.fliplr(cropped)
     return cropped
 
 
@@ -51,13 +49,15 @@ driving_log = pd.read_csv('driving_log.csv')
 image_paths = pd.concat([driving_log['center'], driving_log['left'], driving_log['right']])
 image_paths = np.array(image_paths, dtype=pd.Series)
 mirror_paths = driving_log['center']
+mirror_paths = np.array(mirror_paths, dtype=pd.Series)
 angles = pd.concat([driving_log['steering'], driving_log['steering'] + 0.25, driving_log['steering'] - 0.25,
                    -driving_log['steering']])
 angles = np.array(angles, dtype=pd.Series)
 
 # preprocess images
-images = np.array([process_image(path) for path in image_paths]
-                  .extend([process_image(path, True) for path in mirror_paths]))
+images = [process_image(path) for path in image_paths]            
+images.extend([np.fliplr(process_image(path)) for path in mirror_paths])
+images = np.array(images)
 angles = np.array([np.asarray([angle], np.float64) for angle in angles])
 
 images_training, images_validation, angles_training, angles_validation = train_test_split(images, angles, test_size=0.2,
