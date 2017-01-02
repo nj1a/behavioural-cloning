@@ -52,8 +52,6 @@ image_paths = pd.concat([driving_log['center'], driving_log['left'], driving_log
 image_paths = np.array(image_paths, dtype=pd.Series)
 angles = pd.concat([driving_log['steering'], driving_log['steering'] - 0.1, driving_log['steering'] + 0.1])
 angles = np.array(angles, dtype=pd.Series)
-# image_paths = driving_log['center']
-# angles = driving_log['steering']
 
 images = np.array([process_image(path) for path in image_paths])
 angles = np.array([np.asarray([angle], np.float64) for angle in angles])
@@ -62,7 +60,7 @@ paths_training, paths_validation, angles_training, angles_validation = train_tes
                                                                                         random_state=4242)
 nb_training = paths_training.shape[0]
 nb_validation = paths_validation.shape[0]
-nb_epoch = 1
+nb_epoch = 5
 
 my_model = a_model()
 generator = ImageDataGenerator(width_shift_range=0.1, height_shift_range=0.1, channel_shift_range=0.1)
