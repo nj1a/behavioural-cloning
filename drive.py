@@ -33,8 +33,9 @@ def telemetry(sid, data):
     img_string = data["image"]
     image = Image.open(BytesIO(base64.b64decode(img_string)))
     image_array = np.asarray(image)
-    image_array = imresize(image_array, (100, 200))
-    image_array = image_array[34:, :, :]
+    # image_array = imresize(image_array, (100, 200))
+    # image_array = image_array[34:, :, :]
+    image_array = imresize(image_array, (32, 32))
     transformed_image_array = image_array[None, :, :, :]
 
     # This model currently assumes that the features of the model are just the images. Feel free to change this.
