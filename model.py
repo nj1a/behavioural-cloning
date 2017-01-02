@@ -48,17 +48,17 @@ def a_model():
 driving_log = pd.read_csv('./driving_log.csv')
 image_paths = pd.concat([driving_log['center'], driving_log['left'], driving_log['right']])
 image_paths = np.array(image_paths, dtype=pd.Series)
-angles = pd.concat([driving_log['steering'], driving_log['steering'] - 0.1, driving_log['steering'] + 0.1])
+angles = pd.concat([driving_log['steering'], driving_log['steering'] - 0.2, driving_log['steering'] + 0.2])
 angles = np.array(angles, dtype=pd.Series)
 
 images = np.array([process_image(path) for path in image_paths])
 angles = np.array([np.asarray([angle], np.float64) for angle in angles])
 
-paths_training, paths_validation, angles_training, angles_validation = train_test_split(images, angles, test_size=0.25,
+paths_training, paths_validation, angles_training, angles_validation = train_test_split(images, angles, test_size=0.2,
                                                                                         random_state=424242)
 nb_training = paths_training.shape[0]
 nb_validation = paths_validation.shape[0]
-nb_epoch = 8
+nb_epoch = 6
 
 my_model = a_model()
 my_model.summary()
