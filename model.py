@@ -48,26 +48,28 @@ def a_model():
 
 # load the data
 driving_log = pd.read_csv('driving_log.csv')
-image_paths = pd.concat([driving_log['center'], driving_log['left'], driving_log['right'], driving_log['center']])
+image_paths = pd.concat([driving_log['center'], driving_log['left'], driving_log['right']])
 image_paths = np.array(image_paths, dtype=pd.Series)
-angles = pd.concat([driving_log['steering'], driving_log['steering'] + 0.3, driving_log['steering'] - 0.3,
-                   driving_log['steering'] * -1])
+mirror_paths = driving_log['center']
+angles = pd.concat([driving_log['steering'], driving_log['steering'] + 0.25, driving_log['steering'] - 0.25,
+                   -driving_log['steering']])
 angles = np.array(angles, dtype=pd.Series)
 
 # preprocess images
-images = np.array([process_image(path) for path in image_paths])
+images = np.array([process_image(path) for path in image_paths]
+                  .extend([process_image(path, True) for path in mirror_paths]))
 angles = np.array([np.asarray([angle], np.float64) for angle in angles])
 
 images_training, images_validation, angles_training, angles_validation = train_test_split(images, angles, test_size=0.2,
                                                                                           random_state=4242)
 nb_training = images_training.shape[0]
 nb_validation = images_validation.shape[0]
-nb_epoch = 8
+nb_epoch = 10
 
 my_model = a_model()
 my_model.summary()
 my_model.compile(optimizer=Adam(lr=0.0001), loss='mse')
-generator = ImageDataGenerator(width_shift_range=0.1, height_shift_range=0.1, channel_shift_range=0.1)
+generator = ImageDataGenerator(width_shift_range=0.2, fill_mode='nearest')
 my_model.fit_generator(generator.flow(images_training, angles_training, batch_size=128), nb_training, nb_epoch,
                        validation_data=generator.flow(images_validation, angles_validation, batch_size=128),
                        nb_val_samples=nb_validation)
