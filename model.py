@@ -32,18 +32,16 @@ def a_model():
         Conv2D(64, 3, 3, init='he_normal', subsample=(1, 1)),
         Flatten(),
         ELU(),
-        Dense(1164, activation='relu'),
+        Dense(1164, init='he_normal'),
         ELU(),
-        Dense(100, activation='relu'),
+        Dense(100, init='he_normal'),
         ELU(),
-        Dense(50, activation='relu'),
+        Dense(50, init='he_normal'),
         ELU(),
-        Dense(10, activation='relu'),
+        Dense(10, init='he_normal'),
         ELU(),
-        Dense(1)
+        Dense(1, init='he_normal')
     ])
-    model.summary()
-    model.compile(optimizer=Adam(lr=0.0001), loss='mse')
     return model
 
 # load the data
@@ -63,6 +61,8 @@ nb_validation = paths_validation.shape[0]
 nb_epoch = 8
 
 my_model = a_model()
+my_model.summary()
+my_model.compile(optimizer=Adam(lr=0.0001), loss='mse')
 generator = ImageDataGenerator(width_shift_range=0.1, height_shift_range=0.1, channel_shift_range=0.1)
 my_model.fit_generator(generator.flow(paths_training, angles_training), nb_training, nb_epoch,
                        validation_data=generator.flow(paths_validation, angles_validation), nb_val_samples=nb_validation)
