@@ -57,10 +57,10 @@ images = np.array([process_image(path) for path in image_paths])
 angles = np.array([np.asarray([angle], np.float64) for angle in angles])
 
 paths_training, paths_validation, angles_training, angles_validation = train_test_split(images, angles, test_size=0.25,
-                                                                                        random_state=4242)
+                                                                                        random_state=424242)
 nb_training = paths_training.shape[0]
 nb_validation = paths_validation.shape[0]
-nb_epoch = 5
+nb_epoch = 8
 
 my_model = a_model()
 generator = ImageDataGenerator(width_shift_range=0.1, height_shift_range=0.1, channel_shift_range=0.1)
