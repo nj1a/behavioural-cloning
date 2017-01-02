@@ -50,7 +50,7 @@ def a_model():
 driving_log = pd.read_csv('driving_log.csv')
 image_paths = pd.concat([driving_log['center'], driving_log['left'], driving_log['right'], driving_log['center']])
 image_paths = np.array(image_paths, dtype=pd.Series)
-angles = pd.concat([driving_log['steering'], driving_log['steering'] + 0.25, driving_log['steering'] - 0.25,
+angles = pd.concat([driving_log['steering'], driving_log['steering'] + 0.3, driving_log['steering'] - 0.3,
                    driving_log['steering'] * -1])
 angles = np.array(angles, dtype=pd.Series)
 
