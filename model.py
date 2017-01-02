@@ -50,7 +50,7 @@ image_paths = pd.concat([driving_log['center'], driving_log['left'], driving_log
 image_paths = np.array(image_paths, dtype=pd.Series)
 mirror_paths = driving_log['center']
 mirror_paths = np.array(mirror_paths, dtype=pd.Series)
-angles = pd.concat([driving_log['steering'], driving_log['steering'] + 0.25, driving_log['steering'] - 0.25,
+angles = pd.concat([driving_log['steering'], driving_log['steering'] + 0.3, driving_log['steering'] - 0.25,
                    -driving_log['steering']])
 angles = np.array(angles, dtype=pd.Series)
 
@@ -64,7 +64,7 @@ images_training, images_validation, angles_training, angles_validation = train_t
                                                                                           random_state=4242)
 nb_training = images_training.shape[0]
 nb_validation = images_validation.shape[0]
-nb_epoch = 10
+nb_epoch = 8
 
 my_model = a_model()
 my_model.summary()
