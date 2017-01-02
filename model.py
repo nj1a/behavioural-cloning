@@ -85,7 +85,7 @@ images_training, images_validation, angles_training, angles_validation = train_t
                                                                                           random_state=4242)
 nb_training = images_training.shape[0]
 nb_validation = images_validation.shape[0]
-nb_epoch = 8
+nb_epoch = 13
 
 my_model = a_model()
 my_model.summary()
