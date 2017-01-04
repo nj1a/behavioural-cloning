@@ -9,11 +9,11 @@ from keras.preprocessing.image import ImageDataGenerator
 from keras.optimizers import Adam
 
 
-def process_image(image_path):
+def resize_image(image_path):
     path = image_path.replace(' ', '')
     img = imread(path)
-    cropped = imresize(img, (32, 32))
-    return cropped
+    resized_img = imresize(img, (32, 32))
+    return resized_img
 
 
 def a_model():
@@ -44,8 +44,8 @@ angles = pd.concat([driving_log['steering'], driving_log['steering'] + 0.3, driv
 angles = np.array(angles, dtype=pd.Series)
 
 # preprocess images
-images = [process_image(path) for path in image_paths]            
-images.extend([np.fliplr(process_image(path)) for path in mirror_paths])
+images = [resize_image(path) for path in image_paths]
+images.extend([np.fliplr(resize_image(path)) for path in mirror_paths])
 images = np.array(images)
 angles = np.array([np.asarray([angle], np.float64) for angle in angles])
 
@@ -55,6 +55,7 @@ nb_training = images_training.shape[0]
 nb_validation = images_validation.shape[0]
 nb_epoch = 13
 
+#  train the model
 my_model = a_model()
 my_model.summary()
 my_model.compile(optimizer=Adam(lr=0.0001), loss='mse')
