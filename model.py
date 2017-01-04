@@ -51,8 +51,8 @@ images.extend([np.fliplr(resize_image(path)) for path in mirror_paths])
 images = np.array(images)
 angles = np.array([np.asarray([angle], np.float32) for angle in angles])
 
-images_training, images_validation, angles_training, angles_validation = train_test_split(images, angles, test_size=0.3,
-                                                                                          random_state=421)
+images_training, images_validation, angles_training, angles_validation = train_test_split(images, angles, test_size=0.2,
+                                                                                          random_state=42)
 nb_training = images_training.shape[0]
 nb_validation = images_validation.shape[0]
 nb_epoch = 18
