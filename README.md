@@ -6,11 +6,12 @@ At first, I implemented the model according to the architecture described in the
 
 ## Architecture
 
-As mentioned above, the model is derived from the CIFAR-10 model in keras. and modified the last two layers (replacing Dense(10) and softmax with simply Dense(1) since the the steering angle is just a scalar). There are in total 12 layers including the output layer, out of which four are convolutional layers, two are maxpooling layers, three are drop out layers, and two are fully connected layers (dense). The detailed information of the model is adapted from the output of `model.summary()`.
+As mentioned above, the model is derived from the CIFAR-10 model in keras. and modified the last two layers (replacing Dense(10) and softmax with simply Dense(1) since the the steering angle is just a scalar). There are in total 13 layers including the output layer, out of which one is normalization layer, four are convolutional layers, two are maxpooling layers, three are drop out layers, and two are fully connected layers (dense). The detailed information of the model is adapted from the output of `model.summary()`.
 
 |Layer (type)                   | Output Shape       |   Param #  |   Connected to|                     
 :-----------------------------: |:------------------:| :---------:| :--------------:
-convolution2d_1 (Convolution2D) | (None, 32, 32, 32) |   896      |   convolution2d_input_1[0][0]      
+batchnormalization_1 (BatchNorma| (None, 32, 32, 3)  |   12       |   batchnormalization_input_1[0][0] 
+convolution2d_1 (Convolution2D) | (None, 32, 32, 32) |   896      |   batchnormalization_1[0][0]      
 convolution2d_2 (Convolution2D) | (None, 30, 30, 32) |   9248     |   convolution2d_1[0][0]            
 maxpooling2d_1 (MaxPooling2D)   | (None, 15, 15, 32) |   0        |   convolution2d_2[0][0]            
 dropout_1 (Dropout)             | (None, 15, 15, 32) |   0        |   maxpooling2d_1[0][0]             
@@ -23,16 +24,16 @@ dense_1 (Dense)                 | (None, 512)        |   1180160  |   flatten_1[
 dropout_3 (Dropout)             | (None, 512)        |   0        |   dense_1[0][0]                    
 dense_2 (Dense)                 | (None, 1)          |   513      |   dropout_3[0][0]                  
 
-Total params: 1,246,241
+Total params: 1,246,253
 
-Trainable params: 1,246,241
+Trainable params: 1,246,247
 
-Non-trainable params: 0
+Non-trainable params: 6
 
 
 ## Process
 
-I ended up using the image data set provided by Udacity. With additionally generated images, there are around 25k images for each epoch. The dataset was split into training and validation sets with a ratio of 8:2. I used Adam as my optimizer with learning rate = 1e-4 rather than the default 1e-3 to prevent overfitting. I compensated the rather small learning rate with 13 epochs of training. I used MSE over cross entropy as the loss function since this is a regression problem rater than a classification one. I applied the generator as suggested, where the width of images were randomly shifted.
+I ended up using the image data set provided by Udacity. With additionally generated images, there are around 25k images for each epoch. The dataset was split into training and validation sets with a ratio of 8:2. I used Adam as my optimizer with learning rate = 1e-4 rather than the default 1e-3 to prevent overfitting. I also used two callback functions `EarlyStopping` and `ModelCheckpoint` for the `fit-generator`. `EarlyStopping` allows the training to stop early once a condition is met. I set the condition as the loss not improving for over three epochs. `ModelCheckpoint` allows that only the best model (with the least loss) be saved. I set the epoch number to 18 so the model can be trained to its full potential with the two callbacks. I used MSE over cross entropy as the loss function since this is a regression problem rater than a classification one. I applied the generator as suggested, where the width of images were randomly shifted.
 
 Here are three images from the centre, left, and right cameras, respectively. Note that the sttering angles had to be adjusted when training over images from the left and right cameras.
 
