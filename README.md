@@ -33,3 +33,11 @@ Non-trainable params: 0
 ## Process
 
 I ended up using the image data set provided by Udacity. With additionally generated images, there are around 25k images for each epoch. The dataset was split into training and validation sets with a ratio of 8:2. I used Adam as my optimizer with learning rate = 1e-4 rather than the default 1e-3 to prevent overfitting. I compensated the rather small learning rate with 13 epochs of training. I used MSE over cross entropy as the loss function since this is a regression problem rater than a classification one. I applied the generator as suggested, where the width of images were randomly shifted.
+
+Here are three images from the centre, left, and right cameras, respectively. Note that the sttering angles had to be adjusted when training over images from the left and right cameras.
+
+![alt text](ex_img/center_2016_12_01_13_38_24_781.jpg)
+
+![alt text](ex_img/left_2016_12_01_13_42_56_974.jpg)
+
+![alt text](ex_img/right_2016_12_01_13_39_58_892.jpg)
