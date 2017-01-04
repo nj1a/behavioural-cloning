@@ -41,7 +41,7 @@ image_paths = pd.concat([driving_log['center'], driving_log['left'], driving_log
 image_paths = np.array(image_paths, dtype=pd.Series)
 mirror_paths = driving_log['center']
 mirror_paths = np.array(mirror_paths, dtype=pd.Series)
-angles = pd.concat([driving_log['steering'], driving_log['steering'] + 0.25, driving_log['steering'] - 0.25,
+angles = pd.concat([driving_log['steering'], driving_log['steering'] + 0.3, driving_log['steering'] - 0.25,
                    -driving_log['steering']])
 angles = np.array(angles, dtype=pd.Series)
 
@@ -51,8 +51,8 @@ images.extend([np.fliplr(resize_image(path)) for path in mirror_paths])
 images = np.array(images)
 angles = np.array([np.asarray([angle], np.float32) for angle in angles])
 
-images_training, images_validation, angles_training, angles_validation = train_test_split(images, angles, test_size=0.2,
-                                                                                          random_state=42)
+images_training, images_validation, angles_training, angles_validation = train_test_split(images, angles, test_size=0.3,
+                                                                                          random_state=421)
 nb_training = images_training.shape[0]
 nb_validation = images_validation.shape[0]
 nb_epoch = 18
